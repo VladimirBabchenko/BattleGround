@@ -1,0 +1,88 @@
+html, body {
+    height: 100%;
+    margin: 0;
+  }
+  
+  ul {
+    padding: 0;
+  }
+  
+  #wrapper-military {
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 25px;
+    align-items: flex-start;
+    background-repeat: no-repeat;
+    background-size: 100%;
+  }
+  .team-block {
+    display: flex;
+  }
+  
+  .team-block:first-child {
+    margin-right: 25px;
+  }
+  
+  .teamlist-block {
+    display: flex;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    justify-content: space-around;
+    margin-bottom: 25px;
+  }
+  
+  .field-wrapper {
+    display: flex;
+    justify-content: space-between;
+    flex-basis: 100%;
+  }
+  
+  .field {
+    display: flex;
+    flex-wrap: wrap;
+    flex-basis: 70%;
+    margin-left: 25px;
+    opacity: 0.5;
+  }
+  
+  .score-board {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  
+    flex-basis: 20%;
+    margin-right: 25px;
+    background-color: rgba(66, 28, 35, 0.8);
+  }
+  
+  .score-team-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+  }
+  
+  .score-board-team {
+    list-style-type: none;
+    text-align: center;
+  }
+  
+  .score-board-warrior {
+    font-size: 25px;
+    color: antiquewhite;
+  }
+  
+  .team-score {
+    font-size: 75px;
+    font-weight: bold;
+    color: antiquewhite;
+  }
+  
+  .field-cell {
+    background-color: orange;
+    width: 170px;
+    height: 170px;
+    border: 1px solid black;
+  }
+  
+  

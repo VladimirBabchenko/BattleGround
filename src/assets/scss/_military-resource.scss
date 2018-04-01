@@ -1,0 +1,24 @@
+.warrior {
+    width: 150px;
+    height: 200px;
+    margin-right: 5px;
+    border: 1px solid black;
+    text-align: center;
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  
+  .warrior:last-of-type {
+    margin-right: 0;
+  }
+  
+  .warrior h2 {
+    margin: 0;
+  }
+  
+  .warrior img {
+    align-self: flex-end;
+  }
