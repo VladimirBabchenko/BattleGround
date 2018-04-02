@@ -22,3 +22,17 @@
   .warrior img {
     align-self: flex-end;
   }
+
+.active {
+    // opacity: 0.5;
+    transform: scale(1.2, 1.25)
+  }
+
+ .btn-block {
+   order: 1;
+ }
+
+.btn-fight, 
+.btn-restart {
+  padding: 5px;
+}

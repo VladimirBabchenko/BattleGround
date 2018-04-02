@@ -17,6 +17,9 @@ html, body {
   }
   .team-block {
     display: flex;
+    &:last-child {
+      order: 2;
+    }
   }
   
   .team-block:first-child {

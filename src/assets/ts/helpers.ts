@@ -13,7 +13,7 @@ export function checkExistingIndex(squad, ...ind) {
 }
 
 export function getFightingInterval() {
-    return Math.round(Math.random() *1000);
+    return Math.round(Math.random() *2000);
 }
 
 export function forTest () {

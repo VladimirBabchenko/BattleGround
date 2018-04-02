@@ -57,6 +57,7 @@ class MilitaryResource {
             resourceImg: HTMLImageElement = document.createElement("img");
 
         this._resourceBlock.classList.add("warrior");
+        resourceImg.classList.add("draggable");
         resourceImg.src = url;
 
         resourceTitle.innerHTML = this.name;
