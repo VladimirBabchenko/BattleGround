@@ -1,5 +1,10 @@
 import { checkArgsForNumber, checkInstance } from "./helpers";
 
+enum side {
+    justice = "justice",
+    evil = "evil"
+}
+
 class MilitaryResource {
     private _resourceBlock: HTMLDivElement
     constructor(
@@ -9,6 +14,8 @@ class MilitaryResource {
         public maxHealth: number,
         public availableDist: number,
         public maxDist: number,
+        public price: number,
+        public side: side,
         private url: string,
     ) {
         this.addDom(this.url);
@@ -54,14 +61,21 @@ class MilitaryResource {
     private addDom(url) {
         this._resourceBlock = document.createElement("div");
         const resourceTitle: HTMLHeadingElement = document.createElement("h2"),
+            resourcePrice: HTMLDivElement = document.createElement("div"),
             resourceImg: HTMLImageElement = document.createElement("img");
 
         this._resourceBlock.classList.add("warrior");
-        resourceImg.classList.add("draggable");
+        this._resourceBlock.draggable = true;
+        this._resourceBlock.dataset.side = this.side.toString();
+        this._resourceBlock.classList.add("draggable");
         resourceImg.src = url;
 
         resourceTitle.innerHTML = this.name;
+        resourcePrice.classList.add("price");
+        resourcePrice.innerHTML = `Price: ${this.price.toString()}`;
+
         this._resourceBlock.appendChild(resourceTitle);
+        this._resourceBlock.appendChild(resourcePrice);
         this._resourceBlock.appendChild(resourceImg);
     }
 
@@ -75,3 +89,4 @@ class MilitaryResource {
 }
 
 export default MilitaryResource;
+export {side};

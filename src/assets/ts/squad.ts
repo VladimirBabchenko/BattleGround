@@ -63,9 +63,9 @@ class Squad {
 
     addDom(teamColor): void {
         this._squadBlock = document.createElement("div");
-
         this._squadBlock.classList.add("team-block");
         this._squadBlock.style.backgroundColor = teamColor;
+        
 
         this._squad.forEach(resource => this._squadBlock.appendChild(resource.resourceDom));
     }

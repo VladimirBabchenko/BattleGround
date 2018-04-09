@@ -19,3 +19,8 @@ export function getFightingInterval() {
 export function forTest () {
     return 2;
 }
+
+export function randomMoney() {
+    let result = Math.round((Math.random()*1000));
+    return result < 400 ? 400 : result;
+}

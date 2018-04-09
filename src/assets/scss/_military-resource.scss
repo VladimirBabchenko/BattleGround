@@ -16,6 +16,7 @@
   }
   
   .warrior h2 {
+    flex-basis: 100%;
     margin: 0;
   }
   
@@ -30,6 +31,19 @@
 
  .btn-block {
    order: 1;
+
+   display: flex;
+   align-items: baseline;
+   
+   div {
+     padding: 0 20px;
+     text-align: center;
+     font-size: 24px;
+     color: #fff;
+     &:nth-child(3) {
+       order: -1;
+     }
+   }
  }
 
 .btn-fight, 

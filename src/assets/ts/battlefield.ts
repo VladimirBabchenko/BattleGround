@@ -1,5 +1,5 @@
 import Squad from "./squad";
-import { checkInstance, getFightingInterval } from "./helpers";
+import { checkInstance, getFightingInterval, randomMoney } from "./helpers";
 import MilitaryResource from "./military-resource";
 
 class BattleField {
@@ -22,9 +22,15 @@ class BattleField {
     addBattleField(landscape): void {
         const wrapper: HTMLElement = document.getElementById("wrapper-military");
         wrapper.style.background = landscape;
+        const moneyTeam1: HTMLDivElement = document.createElement("div");
+        const moneyTeam2: HTMLDivElement = document.createElement("div");
         const btnBlock: HTMLDivElement = document.createElement("div");
         const btnFight: HTMLButtonElement = document.createElement("button");
         const btnRestart: HTMLButtonElement = document.createElement("button");
+        moneyTeam1.innerHTML = "Money<br> " + randomMoney();
+        moneyTeam2.innerHTML = "Money<br> " + randomMoney();
+        moneyTeam1.classList.add("money-justice");
+        moneyTeam2.classList.add("money-evil");
         btnFight.innerHTML = "Fight";
         btnRestart.innerHTML = "Restart";
         btnFight.classList.add("btn-fight");
@@ -32,6 +38,8 @@ class BattleField {
         btnBlock.classList.add("btn-block");
         btnBlock.appendChild(btnFight);
         btnBlock.appendChild(btnRestart);
+        btnBlock.appendChild(moneyTeam1);
+        btnBlock.appendChild(moneyTeam2);
 
         const squadBlock: HTMLElement = document.createElement("section"),
             fieldScoreWrapper: HTMLElement = document.createElement("section"),
