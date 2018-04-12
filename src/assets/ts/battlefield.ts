@@ -47,7 +47,9 @@ class BattleField {
             scoreBoard: HTMLDivElement = document.createElement("div");
 
         squadBlock.appendChild(btnBlock);
-
+        const team1 = document.querySelectorAll(".field .warrior[data-side='justice']");
+        const team2 = document.querySelectorAll(".field .warrior[data-side='justice']");
+        const enemyTeams = Array.prototype.slice.call([team1, team2])
         this._battlefield.forEach(team => {
             const squadBlockWrapper: HTMLDivElement = document.createElement("div"),
                 squadBlock: HTMLUListElement = document.createElement("ul");

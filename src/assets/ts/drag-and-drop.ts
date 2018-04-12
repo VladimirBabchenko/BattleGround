@@ -5,9 +5,21 @@ var dragTarget,
     dragPrevSibling,
     dragNextSibling;
 
+function checkPriceAndStopDrag(warriorPrice) {
+    if (((Number(document.querySelector(".money-justice").innerHTML.split(/\s/)[1]) - warriorPrice) < 0) && dragTarget.dataset.side === "justice") return false;
+    if (((Number(document.querySelector(".money-evil").innerHTML.split(/\s/)[1]) - warriorPrice) < 0) && dragTarget.dataset.side === "evil") return false;
+    return true;
+}
+
+function checkAmountAndClone() {
+    var clonedDragElem = dragTarget.cloneNode(true);
+    dragPrevSibling || dragParent.prepend(clonedDragElem);
+    dragNextSibling || dragParent.append(clonedDragElem);
+    dragNextSibling && dragPrevSibling && dragParent.insertBefore(clonedDragElem, dragNextSibling)
+}
+
 export function drag(event) {
     dragTarget = dragParent = dragPrevSibling = dragNextSibling = null;
-    document.querySelector(".money-justice").innerHTML
     var target = event.target;
     dragTarget = target.closest(".warrior");
     dragParent = dragTarget.parentNode;
@@ -16,13 +28,10 @@ export function drag(event) {
     var img = target.closest(".draggable");
     if (img.classList.contains("temporary")) img.classList.remove("temporary");
     if (!img) return;
-    var warriorPrice = Number(target.closest(".warrior").querySelector(".price").innerHTML.split(/\s/)[1]);
-    if (((Number(document.querySelector(".money-justice").innerHTML.split(/\s/)[1]) - warriorPrice) < 0) && dragTarget.dataset.side === "justice")  return;
-    if (((Number(document.querySelector(".money-evil").innerHTML.split(/\s/)[1]) - warriorPrice) < 0) && dragTarget.dataset.side === "evil") return;
+    var warriorPrice = Number(dragTarget.querySelector(".price").innerHTML.split(/\s/)[1]);
+    if (!checkPriceAndStopDrag(warriorPrice)) return;
     img.classList.add("temporary");
     event.dataTransfer.setData("text", target.className);
-    
-    console.log(dragTarget, dragParent, dragPrevSibling, dragNextSibling)
 }
 
 export function allowDrop(event) {
@@ -42,22 +51,11 @@ export function drop(event) {
     var elem = document.querySelector(`.${data}`);
     elem.classList.remove("temporary");
     var warriorPrice = Number(elem.querySelector(".price").innerHTML.split(/\s/)[1]);
-    if ((Number(document.querySelector(".money-justice").innerHTML.split(/\s/)[1]) - warriorPrice) < 0) return;
-    if ((Number(document.querySelector(".money-evil").innerHTML.split(/\s/)[1]) - warriorPrice) < 0) return;
     li.appendChild(elem);
     checkAmountAndClone()
-    // dragParent.appendChild(clonedDragElem);
 
-    
     elem.getAttribute("data-side") === "justice" ?
         document.querySelector(".money-justice").innerHTML = "Money<br> " + (Number(document.querySelector(".money-justice").innerHTML.split(/\s/)[1]) - warriorPrice).toString() :
         document.querySelector(".money-evil").innerHTML = "Money<br> " + (Number(document.querySelector(".money-evil").innerHTML.split(/\s/)[1]) - warriorPrice).toString();
-}
-
-function checkAmountAndClone() {
-    var clonedDragElem = dragTarget.cloneNode(true);
-    dragPrevSibling || dragParent.prepend(clonedDragElem);
-    dragNextSibling || dragParent.append(clonedDragElem);
-    dragNextSibling && dragPrevSibling && dragParent.insertBefore(clonedDragElem, dragNextSibling)
 }
 

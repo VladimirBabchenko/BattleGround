@@ -61,14 +61,13 @@ class MilitaryResource {
     private addDom(url) {
         this._resourceBlock = document.createElement("div");
         const resourceTitle: HTMLHeadingElement = document.createElement("h2"),
-            resourcePrice: HTMLDivElement = document.createElement("div"),
-            resourceImg: HTMLImageElement = document.createElement("img");
+            resourcePrice: HTMLDivElement = document.createElement("div");
 
         this._resourceBlock.classList.add("warrior");
         this._resourceBlock.draggable = true;
         this._resourceBlock.dataset.side = this.side.toString();
         this._resourceBlock.classList.add("draggable");
-        resourceImg.src = url;
+        this._resourceBlock.style.background = `url(${url}) no-repeat 0 49px`;
 
         resourceTitle.innerHTML = this.name;
         resourcePrice.classList.add("price");
@@ -76,7 +75,6 @@ class MilitaryResource {
 
         this._resourceBlock.appendChild(resourceTitle);
         this._resourceBlock.appendChild(resourcePrice);
-        this._resourceBlock.appendChild(resourceImg);
     }
 
     get resourceDom() {
