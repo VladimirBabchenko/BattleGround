@@ -1,6 +1,7 @@
 import Squad from "./squad";
 import { checkInstance, getFightingInterval, randomMoney } from "./helpers";
 import MilitaryResource from "./military-resource";
+import {squadJustice, squadEvil} from "./drag-and-drop"
 
 class BattleField {
     private _battlefield: Squad[] = [];
@@ -55,19 +56,19 @@ class BattleField {
                 squadBlock: HTMLUListElement = document.createElement("ul");
 
             team.squad["squadLength"] = document.createElement("span") as HTMLSpanElement;
-            team.squad["squadLength"].innerHTML = team.squad.length;
+            team.squad["squadLength"].innerHTML = 0;
 
             squadBlockWrapper.classList.add("score-team-wrapper");
             squadBlock.classList.add("score-board-team");
             team.squad["squadLength"].classList.add("team-score");
 
-            team.squad.forEach(resource => {
-                const res: HTMLLIElement = document.createElement("li");
-                resource["scoreTitle"] = res;
-                res.classList.add("score-board-warrior");
-                res.innerHTML = resource.name;
-                squadBlock.appendChild(res);
-            });
+            // team.squad.forEach(resource => {
+            //     const res: HTMLLIElement = document.createElement("li");
+            //     resource["scoreTitle"] = res;
+            //     res.classList.add("score-board-warrior");
+            //     res.innerHTML = resource.name;
+            //     squadBlock.appendChild(res);
+            // });
 
             squadBlockWrapper.appendChild(team.squad["squadLength"]);
             squadBlockWrapper.appendChild(squadBlock);
@@ -95,21 +96,23 @@ class BattleField {
 
     attacked(): void {
         try {
-            this.attackingWarrior && this.attackingWarrior.resourceDom.querySelector("img").classList.remove("active");
-            this.defendingWarrior && this.defendingWarrior.resourceDom.querySelector("img").classList.remove("active");
-            let { attackingTeam, defendingTeam } = this.defineWhichTeamAttack(this._battlefield[0], this._battlefield[1]);
+            this.attackingWarrior && this.attackingWarrior.resourceDom.classList.remove("active");
+            this.defendingWarrior && this.defendingWarrior.resourceDom.classList.remove("active");
+            let { attackingTeam, defendingTeam } = this.defineWhichTeamAttack(squadJustice, squadEvil);
             if (attackingTeam.length === 0 || defendingTeam.length === 0) return;
-            this.attackingWarrior = attackingTeam[this.defineWarriorIndex(attackingTeam.length)];
-            this.defendingWarrior = defendingTeam[this.defineWarriorIndex(defendingTeam.length)];
-            this.attackingWarrior.resourceDom.querySelector("img").classList.add("active");
-            this.defendingWarrior.resourceDom.querySelector("img").classList.add("active");
+            let attackingWarriorIndex = this.defineWarriorIndex(attackingTeam.length);
+            let defendingWarriorIndex = this.defineWarriorIndex(defendingTeam.length);
+            this.attackingWarrior = attackingTeam[attackingWarriorIndex];
+            this.defendingWarrior = defendingTeam[defendingWarriorIndex];
+            this.attackingWarrior.resourceDom.classList.add("active");
+            this.defendingWarrior.resourceDom.classList.add("active");
 
             this.defendingWarrior.attackedBy(this.attackingWarrior);
             if (this.defendingWarrior.currentHealth <= 0) {
                 this.defendingWarrior.resourceDom.parentNode.removeChild(this.defendingWarrior.resourceDom);
-                defendingTeam.splice(defendingTeam.indexOf(this.defendingWarrior), 1);
-                defendingTeam["squadLength"].innerHTML = defendingTeam.length;
-                this.defendingWarrior["scoreTitle"].insertAdjacentHTML("beforeEnd", " -was killed");
+                defendingTeam.splice(defendingWarriorIndex, 1);
+                // defendingTeam["squadLength"].innerHTML = defendingTeam.length;
+                // this.defendingWarrior["scoreTitle"].insertAdjacentHTML("beforeEnd", " -was killed");
                 throw new Error(this.defendingWarrior.name + " was killed");
             }
             this.showResults();
@@ -132,10 +135,10 @@ class BattleField {
         })
     }
 
-    defineWhichTeamAttack(team1: Squad, team2: Squad) {
+    defineWhichTeamAttack(team1, team2) {
         let result: number = Math.floor(Math.random() * (arguments.length)) + 1;
-        return result === 1 ? { attackingTeam: team1.squad, defendingTeam: team2.squad } :
-            { attackingTeam: team2.squad, defendingTeam: team1.squad }
+        return result === 1 ? { attackingTeam: team1, defendingTeam: team2 } :
+            { attackingTeam: team2, defendingTeam: team1 }
     }
 
     defineWarriorIndex(ind: number): number {

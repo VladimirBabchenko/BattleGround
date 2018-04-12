@@ -1,5 +1,7 @@
 import Squad from "./squad";
 import MilitaryResource from "./military-resource";
+import BattleField from "./battlefield";
+import { units } from "../../app";
 var dragTarget,
     dragParent,
     dragPrevSibling,
@@ -52,10 +54,31 @@ export function drop(event) {
     elem.classList.remove("temporary");
     var warriorPrice = Number(elem.querySelector(".price").innerHTML.split(/\s/)[1]);
     li.appendChild(elem);
-    checkAmountAndClone()
+    checkAmountAndClone();
 
     elem.getAttribute("data-side") === "justice" ?
         document.querySelector(".money-justice").innerHTML = "Money<br> " + (Number(document.querySelector(".money-justice").innerHTML.split(/\s/)[1]) - warriorPrice).toString() :
         document.querySelector(".money-evil").innerHTML = "Money<br> " + (Number(document.querySelector(".money-evil").innerHTML.split(/\s/)[1]) - warriorPrice).toString();
+
+    let unitName = dragTarget.querySelector("h2").innerHTML;
+    findUnitSide(unitName);
 }
+
+const squadJustice = [], squadEvil = []
+function findUnitSide(unitName) {
+    const unit = units.find(unit => unit.name === unitName);
+    unit && (unit.side === "justice") ?
+        squadJustice.push(unit) && addSquadLengthAndUnits(0, unit) :
+        squadEvil.push(unit) && addSquadLengthAndUnits(1, unit);
+}
+
+function addSquadLengthAndUnits(num, warrior) {
+    (document.querySelectorAll(".team-score")[`${num}`].innerHTML = (Number(document.querySelectorAll(".team-score")[`${num}`].innerHTML) + 1).toString());
+    var unit = document.createElement("li");
+    unit.innerHTML = warrior.name;
+    unit.classList.add("score-board-warrior");
+    document.querySelectorAll(".score-board-team")[`${num}`].appendChild(unit)
+}
+
+export { squadJustice, squadEvil };
 
