@@ -149,10 +149,3 @@ class BattleField {
 }
 
 export default BattleField;
-
-const obj = {
-    a: 25,
-    b: 33
-}
-
-console.log(Object.keys(obj))

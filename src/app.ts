@@ -30,4 +30,3 @@ field.addEventListener("dragover", allowDrop);
 field.addEventListener("drop", drop);
 
 
-
