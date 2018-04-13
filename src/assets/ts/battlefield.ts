@@ -1,7 +1,8 @@
 import Squad from "./squad";
 import { checkInstance, getFightingInterval, randomMoney } from "./helpers";
 import MilitaryResource from "./military-resource";
-import {squadJustice, squadEvil} from "./drag-and-drop"
+import { squadJustice, squadEvil, findUnitSide } from "./drag-and-drop";
+import { units } from "../../app";
 
 class BattleField {
     private _battlefield: Squad[] = [];
@@ -62,14 +63,6 @@ class BattleField {
             squadBlock.classList.add("score-board-team");
             team.squad["squadLength"].classList.add("team-score");
 
-            // team.squad.forEach(resource => {
-            //     const res: HTMLLIElement = document.createElement("li");
-            //     resource["scoreTitle"] = res;
-            //     res.classList.add("score-board-warrior");
-            //     res.innerHTML = resource.name;
-            //     squadBlock.appendChild(res);
-            // });
-
             squadBlockWrapper.appendChild(team.squad["squadLength"]);
             squadBlockWrapper.appendChild(squadBlock);
             scoreBoard.appendChild(squadBlockWrapper);
@@ -107,13 +100,17 @@ class BattleField {
             this.attackingWarrior.resourceDom.classList.add("active");
             this.defendingWarrior.resourceDom.classList.add("active");
 
+
+
             this.defendingWarrior.attackedBy(this.attackingWarrior);
             if (this.defendingWarrior.currentHealth <= 0) {
+                var fieldCell = <HTMLElement>this.defendingWarrior.resourceDom.parentNode;
+                fieldCell.style.backgroundColor = "";
+
                 this.defendingWarrior.resourceDom.parentNode.removeChild(this.defendingWarrior.resourceDom);
                 defendingTeam.splice(defendingWarriorIndex, 1);
-                // defendingTeam["squadLength"].innerHTML = defendingTeam.length;
-                // this.defendingWarrior["scoreTitle"].insertAdjacentHTML("beforeEnd", " -was killed");
-                throw new Error(this.defendingWarrior.name + " was killed");
+
+                updateScoreBoard(defendingTeam, this.defendingWarrior);
             }
             this.showResults();
 
@@ -123,6 +120,7 @@ class BattleField {
     }
 
     startBattle(): void {
+        if (!checkExistingUnitsForFight()) return;
         let self = this;
         setTimeout(function cb() {
             try {
@@ -151,6 +149,23 @@ class BattleField {
             this.defendingWarrior
         )
     }
+}
+
+function checkExistingUnitsForFight() {
+    var warriorJustice = document.querySelector(".field .warrior[data-side='justice']");
+    var warriorEvil = document.querySelector(".field .warrior[data-side='evil']");
+    return warriorJustice && warriorEvil;
+}
+
+function updateScoreBoard(defendingTeam, defendingWarrior) {
+    var unitName = defendingWarrior.name;
+    var unitSide = defendingWarrior.side === "justice" ? 0 : 1;
+
+    document.querySelectorAll(".team-score")[unitSide].innerHTML = defendingTeam.length;
+    var defendingTeamInScoreTable = document.querySelectorAll(".score-board-team")[unitSide];
+    var defendingWarriorsInTable = Array.prototype.slice.call(defendingTeamInScoreTable.querySelectorAll(".score-board-warrior"));
+    var warriorNodeInTable = defendingWarriorsInTable.find(warriorInTable => warriorInTable.innerHTML === unitName);
+    warriorNodeInTable.insertAdjacentHTML("beforeEnd", " -was killed");
 }
 
 export default BattleField;

@@ -46,9 +46,11 @@ class MilitaryResource {
 
     clone(): MilitaryResource {
         try {
-            if (!checkInstance(this, MilitaryResource)) throw "You cannot copy this. It should be any of Military Resources";
+            if (!checkInstance(MilitaryResource, this)) throw "You cannot copy this. It should be any of Military Resources";
             let clonedResource: number = Object.create(MilitaryResource.prototype);
-            return Object.assign(clonedResource, this);
+            const newObj = Object.assign(clonedResource, this);
+            newObj.setResourceDom = this._resourceBlock.cloneNode(true)
+            return newObj
         } catch (err) {
             console.log(err);
         }

@@ -10,8 +10,8 @@ const knight = new MilitaryResource("knight", 250, 1250, 850, 500, 500, 200, sid
 const assasin = new MilitaryResource("assasin", 400, 650, 650, 500, 500, 200, side.evil, "/src/assets/img/assasin.png");
 const lich = new MilitaryResource("lich", 300, 660, 660, 500, 500, 200, side.evil, "/src/assets/img/lich.png");
 const vampire = new MilitaryResource("vampire", 250, 1000, 1000, 1000, 1000, 250, side.evil, "/src/assets/img/vampire.png"); 
-const vampire1 = new MilitaryResource("vampire", 250, 1000, 1000, 1000, 1000, 250, side.evil, "/src/assets/img/vampire.png");
-console.log(vampire1.clone())
+const vampire1 = vampire.clone();
+console.log(vampire1);
 const units = [archer, palladin, knight, assasin, lich, vampire];
 
 const squad = new Squad("aqua", [archer, palladin, knight]);

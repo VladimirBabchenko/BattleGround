@@ -5,7 +5,8 @@ import { units } from "../../app";
 var dragTarget,
     dragParent,
     dragPrevSibling,
-    dragNextSibling;
+    dragNextSibling,
+    dragTargetColor;
 
 function checkPriceAndStopDrag(warriorPrice) {
     if (((Number(document.querySelector(".money-justice").innerHTML.split(/\s/)[1]) - warriorPrice) < 0) && dragTarget.dataset.side === "justice") return false;
@@ -27,6 +28,7 @@ export function drag(event) {
     dragParent = dragTarget.parentNode;
     dragPrevSibling = dragTarget.previousElementSibling;
     dragNextSibling = dragTarget.nextElementSibling;
+    dragTargetColor = dragParent.style.backgroundColor;
     var img = target.closest(".draggable");
     if (img.classList.contains("temporary")) img.classList.remove("temporary");
     if (!img) return;
@@ -47,6 +49,7 @@ export function drop(event) {
     event.preventDefault();
     var target = event.target;
     var li = target.closest(".field-cell");
+    if (li.firstElementChild) return;
     if (!li) return;
     var data = event.dataTransfer.getData("text").match(/temporary/);
     if (!data) return;
@@ -54,6 +57,7 @@ export function drop(event) {
     elem.classList.remove("temporary");
     var warriorPrice = Number(elem.querySelector(".price").innerHTML.split(/\s/)[1]);
     li.appendChild(elem);
+    li.style.backgroundColor = dragTargetColor;
     checkAmountAndClone();
 
     elem.getAttribute("data-side") === "justice" ?
@@ -67,9 +71,14 @@ export function drop(event) {
 const squadJustice = [], squadEvil = []
 function findUnitSide(unitName) {
     const unit = units.find(unit => unit.name === unitName);
-    unit && (unit.side === "justice") ?
-        squadJustice.push(unit) && addSquadLengthAndUnits(0, unit) :
-        squadEvil.push(unit) && addSquadLengthAndUnits(1, unit);
+    var newUnit = unit && unit.clone();
+    newUnit.resourceDom.style.border = "none";
+    newUnit.resourceDom.style.backgroundPosition = "0 21px"
+    newUnit && (unit.side === "justice") ?
+        squadJustice.push(newUnit) && addSquadLengthAndUnits(0, newUnit) :
+        squadEvil.push(newUnit) && addSquadLengthAndUnits(1, newUnit);
+        dragTarget.parentNode.replaceChild(newUnit.resourceDom, dragTarget)
+        newUnit.resourceDom.querySelector(".price").remove();
 }
 
 function addSquadLengthAndUnits(num, warrior) {
@@ -80,5 +89,5 @@ function addSquadLengthAndUnits(num, warrior) {
     document.querySelectorAll(".score-board-team")[`${num}`].appendChild(unit)
 }
 
-export { squadJustice, squadEvil };
+export { squadJustice, squadEvil, findUnitSide };
 
