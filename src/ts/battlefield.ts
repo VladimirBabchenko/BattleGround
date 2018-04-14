@@ -2,7 +2,7 @@ import Squad from "./squad";
 import { checkInstance, getFightingInterval, randomMoney } from "./helpers";
 import MilitaryResource from "./military-resource";
 import { squadJustice, squadEvil, findUnitSide } from "./drag-and-drop";
-import { units } from "../../app";
+import { units } from "../app";
 
 class BattleField {
     private _battlefield: Squad[] = [];

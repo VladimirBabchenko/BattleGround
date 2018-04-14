@@ -1,27 +1,25 @@
-import Squad from "./squad";
 import MilitaryResource from "./military-resource";
-import BattleField from "./battlefield";
-import { units } from "../../app";
-var dragTarget,
+import { units } from "../app";
+let dragTarget,
     dragParent,
     dragPrevSibling,
     dragNextSibling,
     dragTargetColor;
 
-function checkPriceAndStopDrag(warriorPrice) {
+function checkPriceAndStopDrag(warriorPrice: number): boolean {
     if (((Number(document.querySelector(".money-justice").innerHTML.split(/\s/)[1]) - warriorPrice) < 0) && dragTarget.dataset.side === "justice") return false;
     if (((Number(document.querySelector(".money-evil").innerHTML.split(/\s/)[1]) - warriorPrice) < 0) && dragTarget.dataset.side === "evil") return false;
     return true;
 }
 
-function checkAmountAndClone() {
-    var clonedDragElem = dragTarget.cloneNode(true);
+function checkAmountAndClone(): void {
+    var clonedDragElem: HTMLElement = dragTarget.cloneNode(true);
     dragPrevSibling || dragParent.prepend(clonedDragElem);
     dragNextSibling || dragParent.append(clonedDragElem);
     dragNextSibling && dragPrevSibling && dragParent.insertBefore(clonedDragElem, dragNextSibling)
 }
 
-export function drag(event) {
+export function drag(event): void {
     dragTarget = dragParent = dragPrevSibling = dragNextSibling = null;
     var target = event.target;
     dragTarget = target.closest(".warrior");
@@ -38,24 +36,24 @@ export function drag(event) {
     event.dataTransfer.setData("text", target.className);
 }
 
-export function allowDrop(event) {
+export function allowDrop(event): void {
     event.preventDefault();
     var target = event.target;
     var li = target.closest(".field-cell");
     if (!li) return;
 }
 
-export function drop(event) {
+export function drop(event): void {
     event.preventDefault();
-    var target = event.target;
-    var li = target.closest(".field-cell");
+    let target = event.target;
+    let li = target.closest(".field-cell");
     if (li.firstElementChild) return;
     if (!li) return;
-    var data = event.dataTransfer.getData("text").match(/temporary/);
+    let data = event.dataTransfer.getData("text").match(/temporary/);
     if (!data) return;
-    var elem = document.querySelector(`.${data}`);
+    let elem = document.querySelector(`.${data}`);
     elem.classList.remove("temporary");
-    var warriorPrice = Number(elem.querySelector(".price").innerHTML.split(/\s/)[1]);
+    let warriorPrice: number = Number(elem.querySelector(".price").innerHTML.split(/\s/)[1]);
     li.appendChild(elem);
     li.style.backgroundColor = dragTargetColor;
     checkAmountAndClone();
